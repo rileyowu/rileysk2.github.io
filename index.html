@@ -69,6 +69,17 @@
     .profile h2 {
       font-size: 1.5rem;
       font-weight: 600;
+      background: linear-gradient(270deg, #9863E7, #4498DB);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: animatedGradientText 6s ease infinite;
+    }
+
+    @keyframes animatedGradientText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
   </style>
 </head>
