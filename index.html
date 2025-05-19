@@ -75,6 +75,7 @@
       backdrop-filter: blur(8px);
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
       transition: transform 0.3s ease;
+      position: relative;
     }
 
     .profile:hover {
@@ -99,10 +100,13 @@
       margin-bottom: 1rem;
     }
 
-    @keyframes animatedGradientText {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
 
     .social-icons {
@@ -143,6 +147,7 @@
   <div class="profile-container" id="content">
     <!-- Riley Profile -->
     <div class="profile riley">
+      <div class="status-dot" id="status-riley"></div>
       <img src="https://cdn.discordapp.com/avatars/1142433636822548601/d0478937f9ceb8a9c22b3471115e6e96.png?size=512" alt="Riley">
       <h2>riley</h2>
       <div class="social-icons">
@@ -163,6 +168,7 @@
 
     <!-- Intallact Profile -->
     <div class="profile intallact">
+      <div class="status-dot" id="status-intallact"></div>
       <img src="https://cdn.discordapp.com/avatars/1011756509501333532/7c4e9839401de126a50ca7a567dd27fd.png?size=512" alt="Intallact">
       <h2>Intallact</h2>
       <div class="social-icons">
@@ -186,10 +192,36 @@
     function enterSite() {
       document.querySelector('.overlay').classList.add('hidden');
       const audio = document.getElementById('bgAudio');
-      audio.volume = 0.10;
+      audio.volume = 0.5;
       audio.play().catch(e => console.log("Audio play blocked:", e));
       document.getElementById('content').style.pointerEvents = 'auto';
     }
+
+    async function updateStatus(userId, elementId) {
+      try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${userId}`);
+        const data = await res.json();
+        const status = data.data.discord_status;
+        const el = document.getElementById(elementId);
+        const colors = {
+          online: 'lime',
+          dnd: 'red',
+          idle: 'orange',
+          offline: 'gray',
+          invisible: 'gray'
+        };
+        el.style.backgroundColor = colors[status] || 'gray';
+      } catch (e) {
+        console.error("Failed to fetch status for", userId);
+      }
+    }
+
+    updateStatus("1142433636822548601", "status-riley");
+    updateStatus("1011756509501333532", "status-intallact");
+    setInterval(() => {
+      updateStatus("1142433636822548601", "status-riley");
+      updateStatus("1011756509501333532", "status-intallact");
+    }, 10000);
   </script>
 
 </body>
