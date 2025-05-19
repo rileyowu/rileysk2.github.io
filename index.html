@@ -186,7 +186,7 @@
     function enterSite() {
       document.querySelector('.overlay').classList.add('hidden');
       const audio = document.getElementById('bgAudio');
-      audio.volume = 0.5;
+      audio.volume = 0.10;
       audio.play().catch(e => console.log("Audio play blocked:", e));
       document.getElementById('content').style.pointerEvents = 'auto';
     }
